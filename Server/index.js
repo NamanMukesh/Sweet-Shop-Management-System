@@ -11,27 +11,21 @@ dotenv.config({
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to database
+
 connectDB().catch((error) => {
   console.error("Failed to connect to database:", error);
   process.exit(1);
 });
 
-// CORS Middleware
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: true, // Allow all origins
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
-// Request logging middleware (only in development)
-if (process.env.NODE_ENV === 'development') {
-  app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
-    next();
-  });
-}
 
 // Middleware
 app.use(express.json());
@@ -72,5 +66,4 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
   console.log(`📍 API URL: http://localhost:${PORT}`);
-  console.log(`🌐 CORS enabled for: ${process.env.CLIENT_URL || "http://localhost:5173"}`);
 });
