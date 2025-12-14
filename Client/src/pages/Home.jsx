@@ -132,7 +132,7 @@ const Home = () => {
                     <span className="font-medium">Category:</span> {sweet.category}
                   </p>
                   <p className="text-2xl font-bold text-primary mb-4">
-                    ${sweet.price?.toFixed(2) || '0.00'}
+                    Rs. {sweet.price?.toFixed(2) || '0.00'}
                   </p>
                   <div className="flex items-center justify-between mb-4">
                     <span
