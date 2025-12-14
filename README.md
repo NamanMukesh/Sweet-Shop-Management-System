@@ -125,7 +125,7 @@ Sweets Shop Management System/
 ### Step 1: Clone the Repository
 
 ```bash
-git clone <https://github.com/NamanMukesh/Sweet-Shop-Management-System>
+git clone: https://github.com/NamanMukesh/Sweet-Shop-Management-System
 cd "Sweets Shop Management System"
 ```
 
@@ -148,10 +148,6 @@ touch .env
 
 4. Add the following environment variables to `.env`:
 ```env
-# Server Configuration
-PORT=5000
-NODE_ENV=development
-
 # Database Configuration
 
 # PORT=5000
