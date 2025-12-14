@@ -14,8 +14,8 @@ const sweetSchema = new mongoose.Schema(
       required: [true, "Category is required"],
       trim: true,
       enum: [
+        "Sweets",
         "Chocolates",
-        "Candies",
         "Cookies",
         "Cakes",
         "Ice Cream",

@@ -1,12 +1,11 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import toast from 'react-hot-toast'
 
-const Login = () => {
-  const { login, register } = useAuth()
+const UserLogin = () => {
+  const { login } = useAuth()
   const navigate = useNavigate()
-  const [state, setState] = React.useState('login')
-  const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [loading, setLoading] = React.useState(false)
@@ -16,18 +15,22 @@ const Login = () => {
     setLoading(true)
 
     try {
-      let result
-      if (state === 'login') {
-        result = await login(email, password)
-      } else {
-        result = await register(name, email, password)
+      if (!email || !password) {
+        toast.error('Please fill in all fields')
+        setLoading(false)
+        return
       }
 
-      if (result.success) {
-        navigate('/')
+      const result = await login(email.trim(), password.trim())
+
+      if (result && result.success) {
+        toast.success('Login successful!')
+        setTimeout(() => {
+          navigate('/sweets', { replace: true })
+        }, 200)
       }
     } catch (error) {
-      console.error('Auth error:', error)
+      // Error already handled by login function
     } finally {
       setLoading(false)
     }
@@ -41,28 +44,11 @@ const Login = () => {
             🍬 Sweet Shop
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            {state === 'login' ? 'Sign in to your account' : 'Create a new account'}
+            User Login
           </p>
         </div>
         <form onSubmit={onSubmitHandler} className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-xl">
           <div className="space-y-4">
-            {state === 'register' && (
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  Name
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your name"
-                  className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                />
-              </div>
-            )}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email address
@@ -103,34 +89,23 @@ const Login = () => {
               disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
-              {loading ? 'Processing...' : state === 'register' ? 'Create Account' : 'Sign in'}
+              {loading ? 'Logging in...' : 'Sign in'}
             </button>
           </div>
 
-          <div className="text-center">
-            {state === 'register' ? (
-              <p className="text-sm text-gray-600">
-                Already have an account?{' '}
-                <button
-                  type="button"
-                  onClick={() => setState('login')}
-                  className="font-medium text-primary hover:text-blue-800 cursor-pointer"
-                >
-                  Sign in
-                </button>
-              </p>
-            ) : (
-              <p className="text-sm text-gray-600">
-                Don't have an account?{' '}
-                <button
-                  type="button"
-                  onClick={() => setState('register')}
-                  className="font-medium text-primary hover:text-blue-800 cursor-pointer"
-                >
-                  Sign up
-                </button>
-              </p>
-            )}
+          <div className="text-center space-y-2">
+            <p className="text-sm text-gray-600">
+              Don't have an account?{' '}
+              <Link to="/register" className="font-medium text-primary hover:text-blue-800">
+                Register here
+              </Link>
+            </p>
+            <p className="text-sm text-gray-600">
+              Admin?{' '}
+              <Link to="/admin/login" className="font-medium text-primary hover:text-blue-800">
+                Admin Login
+              </Link>
+            </p>
           </div>
         </form>
       </div>
@@ -138,4 +113,5 @@ const Login = () => {
   )
 }
 
-export default Login
+export default UserLogin
+

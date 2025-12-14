@@ -1,12 +1,11 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import toast from 'react-hot-toast'
 
-const Register = () => {
-  const { register } = useAuth()
+const AdminLogin = () => {
+  const { login } = useAuth()
   const navigate = useNavigate()
-  const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [loading, setLoading] = React.useState(false)
@@ -16,51 +15,46 @@ const Register = () => {
     setLoading(true)
 
     try {
-      const result = await register(name, email, password)
+      if (!email || !password) {
+        toast.error('Please fill in all fields')
+        setLoading(false)
+        return
+      }
+
+      const result = await login(email.trim(), password.trim(), true)
+
       if (result && result.success) {
-        toast.success('Registration successful!')
+        toast.success('Admin login successful!')
         setTimeout(() => {
-          navigate('/sweets', { replace: true })
+          navigate('/dashboard', { replace: true })
         }, 200)
+      } else {
+        // Error toast already shown by login function
+        setLoading(false)
       }
     } catch (error) {
-      console.error('Registration error:', error)
+      // Error already handled by login function
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-orange-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h2 className="text-4xl font-bold text-gray-900">
             🍬 Sweet Shop
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Create a new account
+            Admin Login
           </p>
         </div>
-        <form onSubmit={onSubmitHandler} className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-xl">
+        <form onSubmit={onSubmitHandler} className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-xl border-2 border-red-200">
           <div className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Name
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your name"
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-              />
-            </div>
-            <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
+                Admin Email
               </label>
               <input
                 id="email"
@@ -70,7 +64,7 @@ const Register = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
+                placeholder="Enter admin email"
                 className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
               />
             </div>
@@ -82,11 +76,11 @@ const Register = () => {
                 id="password"
                 name="password"
                 type="password"
-                autoComplete="new-password"
+                autoComplete="current-password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
+                placeholder="Enter admin password"
                 className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
               />
             </div>
@@ -96,22 +90,18 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
-              {loading ? 'Creating Account...' : 'Create Account'}
+              {loading ? 'Logging in...' : 'Admin Sign in'}
             </button>
           </div>
 
           <div className="text-center">
             <p className="text-sm text-gray-600">
-              Already have an account?{' '}
-              <button
-                type="button"
-                onClick={() => navigate('/login')}
-                className="font-medium text-primary hover:text-blue-800 cursor-pointer"
-              >
-                Sign in
-              </button>
+              Regular user?{' '}
+              <Link to="/login" className="font-medium text-primary hover:text-blue-800">
+                User Login
+              </Link>
             </p>
           </div>
         </form>
@@ -120,5 +110,5 @@ const Register = () => {
   )
 }
 
-export default Register
+export default AdminLogin
 

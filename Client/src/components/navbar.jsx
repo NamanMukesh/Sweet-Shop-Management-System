@@ -49,7 +49,13 @@ const Navbar = () => {
                   to="/login"
                   className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  Login
+                  User Login
+                </Link>
+                <Link
+                  to="/admin/login"
+                  className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Admin Login
                 </Link>
                 <Link
                   to="/register"

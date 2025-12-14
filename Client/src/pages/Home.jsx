@@ -27,7 +27,6 @@ const Home = () => {
         setCategories(uniqueCategories)
       }
     } catch (error) {
-      console.error('Failed to fetch sweets:', error)
       toast.error('Failed to load sweets')
     } finally {
       setLoading(false)
@@ -39,7 +38,7 @@ const Home = () => {
       const response = await axiosInstance.post(`/api/sweets/${sweetId}/purchase`)
       if (response.data.success) {
         toast.success('Purchase successful!')
-        fetchSweets() // Refresh the list
+        fetchSweets()
       } else {
         toast.error(response.data.message || 'Purchase failed')
       }
