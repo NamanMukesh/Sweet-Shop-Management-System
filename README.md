@@ -8,16 +8,12 @@ A full-stack web application for managing a sweet shop inventory, built with Rea
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
-- [Prerequisites](#prerequisites)
 - [Installation & Setup](#installation--setup)
-- [Environment Variables](#environment-variables)
 - [Running the Application](#running-the-application)
 - [API Endpoints](#api-endpoints)
 - [Screenshots](#screenshots)
-- [Deployment](#deployment)
 - [My AI Usage](#my-ai-usage)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## 🎯 Project Overview
 
@@ -274,7 +270,7 @@ Open your browser and navigate to:
 
 ## 🤖 My AI Usage
 
-This project was developed with the assistance of AI tools, primarily using **Cursor AI** and **Claude (Anthropic)**. The AI was used for:
+This project was developed with the assistance of AI tools, primarily using **ChatGPT** and **Claude**. The AI was used for:
 
 ### Development Assistance
 - **Code Generation**: React components
